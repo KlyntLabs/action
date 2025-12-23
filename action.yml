@@ -62,10 +62,10 @@ runs:
       shell: bash
       run: node ${{ github.action_path }}/dist/index.js
       env:
-        INPUT_API-KEY: ${{ inputs.api-key }}
-        INPUT_TENANT-ID: ${{ inputs.tenant-id }}
+        INPUT_API_KEY: ${{ inputs.api-key }}
+        INPUT_TENANT_ID: ${{ inputs.tenant-id }}
         INPUT_MANIFEST: ${{ inputs.manifest }}
         INPUT_ENTRY: ${{ inputs.entry }}
         INPUT_BUNDLE: ${{ inputs.bundle }}
-        INPUT_SKIP-ATTESTATION: ${{ inputs.skip-attestation }}
-        INPUT_API-URL: ${{ inputs.api-url }}
+        INPUT_SKIP_ATTESTATION: ${{ inputs.skip-attestation }}
+        INPUT_API_URL: ${{ inputs.api-url }}
