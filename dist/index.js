@@ -67443,17 +67443,20 @@ async function generateAttestation(bundlePath, manifestId, bundleHash) {
         if (!token) {
             throw new Error('GITHUB_TOKEN environment variable is required for attestation');
         }
+        // Use GitHub's supported build type for SLSA provenance
         const attestation = await (0, attest_1.attest)({
             subjectName: manifestId,
             subjectDigest: { sha256: bundleHash.replace('sha256:', '') },
             predicateType: 'https://slsa.dev/provenance/v1',
             predicate: {
                 buildDefinition: {
-                    buildType: 'https://klynt.com/miniapp-build/v1',
+                    buildType: 'https://github.com/Attestations/GitHubActionsWorkflow@v1',
                     externalParameters: {
-                        repository: `https://github.com/${process.env.GITHUB_REPOSITORY}`,
-                        ref: process.env.GITHUB_REF,
-                        workflow: process.env.GITHUB_WORKFLOW,
+                        workflow: {
+                            ref: process.env.GITHUB_REF,
+                            repository: `https://github.com/${process.env.GITHUB_REPOSITORY}`,
+                            path: '.github/workflows/deploy.yml',
+                        },
                     },
                     internalParameters: {
                         github: {
@@ -67473,7 +67476,7 @@ async function generateAttestation(bundlePath, manifestId, bundleHash) {
                 },
                 runDetails: {
                     builder: {
-                        id: 'https://github.com/KlyntLabs/action@v0.0.9',
+                        id: 'https://github.com/KlyntLabs/action@v0.0.10',
                     },
                     metadata: {
                         invocationId: `https://github.com/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`,
