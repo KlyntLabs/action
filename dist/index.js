@@ -67527,13 +67527,14 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.buildMiniapp = buildMiniapp;
-const esbuild = __importStar(__nccwpck_require__(64713));
 const path = __importStar(__nccwpck_require__(16928));
 const fs = __importStar(__nccwpck_require__(91943));
 /**
  * Build miniapp using esbuild
  */
 async function buildMiniapp(entryPoint, manifest) {
+    // Dynamically import esbuild only when building is needed
+    const esbuild = await Promise.resolve().then(() => __importStar(__nccwpck_require__(64713)));
     const outputDir = path.join(process.cwd(), '.klynt-build');
     const outputPath = path.join(outputDir, 'bundle.js');
     // Ensure output directory exists
@@ -67802,7 +67803,6 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(14442));
 const github = __importStar(__nccwpck_require__(85251));
 const fs = __importStar(__nccwpck_require__(91943));
-const build_1 = __nccwpck_require__(13395);
 const attest_1 = __nccwpck_require__(59626);
 const deploy_1 = __nccwpck_require__(13848);
 const manifest_1 = __nccwpck_require__(96714);
@@ -67838,7 +67838,9 @@ async function run() {
         }
         else {
             core.startGroup('🔨 Building miniapp');
-            const buildResult = await (0, build_1.buildMiniapp)(entryPoint, manifest);
+            // Only import build module when actually building
+            const { buildMiniapp } = await Promise.resolve().then(() => __importStar(__nccwpck_require__(13395)));
+            const buildResult = await buildMiniapp(entryPoint, manifest);
             bundlePath = buildResult.outputPath;
             bundleContent = buildResult.content;
             core.info(`Built bundle: ${(0, utils_1.formatFileSize)(bundleContent.length)}`);
