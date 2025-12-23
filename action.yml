@@ -9,9 +9,6 @@ inputs:
   api-key:
     description: 'Klynt API key (use secrets.KLYNT_API_KEY)'
     required: true
-  tenant-id:
-    description: 'Target tenant ID for deployment'
-    required: true
   manifest:
     description: 'Path to package.json or manifest.json (defaults to package.json)'
     required: false
@@ -27,10 +24,6 @@ inputs:
     description: 'Skip SLSA attestation generation (not recommended)'
     required: false
     default: 'false'
-  github-token:
-    description: 'GitHub token for attestation (defaults to github.token)'
-    required: false
-    default: ${{ github.token }}
   api-url:
     description: 'Klynt API base URL'
     required: false

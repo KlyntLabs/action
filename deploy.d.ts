@@ -1,7 +1,6 @@
 import type { ManifestData } from './manifest';
 export interface DeployOptions {
     apiKey: string;
-    tenantId: string;
     apiUrl: string;
     manifest: ManifestData;
     bundle: Buffer;
