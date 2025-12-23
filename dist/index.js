@@ -67437,8 +67437,12 @@ const core = __importStar(__nccwpck_require__(14442));
  */
 async function generateAttestation(bundlePath, manifestId, bundleHash) {
     try {
-        // @actions/attest v1.x requires token parameter
-        // In GitHub Actions context, it automatically uses ACTIONS_ID_TOKEN_REQUEST_TOKEN
+        // Use the GitHub token from the environment
+        // This is automatically available in GitHub Actions with the correct permissions
+        const token = process.env.GITHUB_TOKEN || '';
+        if (!token) {
+            throw new Error('GITHUB_TOKEN environment variable is required for attestation');
+        }
         const attestation = await (0, attest_1.attest)({
             subjectName: manifestId,
             subjectDigest: { sha256: bundleHash.replace('sha256:', '') },
@@ -67474,7 +67478,7 @@ async function generateAttestation(bundlePath, manifestId, bundleHash) {
                     },
                 ],
             },
-            token: process.env.ACTIONS_ID_TOKEN_REQUEST_TOKEN || '',
+            token,
         });
         return attestation.attestationID ?? '';
     }
