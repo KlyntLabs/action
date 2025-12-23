@@ -67448,35 +67448,38 @@ async function generateAttestation(bundlePath, manifestId, bundleHash) {
             subjectDigest: { sha256: bundleHash.replace('sha256:', '') },
             predicateType: 'https://slsa.dev/provenance/v1',
             predicate: {
-                buildType: 'https://klynt.com/miniapp-build/v1',
-                builder: {
-                    id: 'https://github.com/actions/runner',
-                },
-                invocation: {
-                    configSource: {
-                        uri: `git+https://github.com/${process.env.GITHUB_REPOSITORY}`,
-                        digest: {
-                            sha1: process.env.GITHUB_SHA ?? '',
-                        },
-                        entryPoint: process.env.GITHUB_WORKFLOW,
+                buildDefinition: {
+                    buildType: 'https://klynt.com/miniapp-build/v1',
+                    externalParameters: {
+                        repository: `https://github.com/${process.env.GITHUB_REPOSITORY}`,
+                        ref: process.env.GITHUB_REF,
+                        workflow: process.env.GITHUB_WORKFLOW,
                     },
-                },
-                metadata: {
-                    buildInvocationId: process.env.GITHUB_RUN_ID,
-                    completeness: {
-                        parameters: true,
-                        environment: true,
-                        materials: true,
-                    },
-                },
-                materials: [
-                    {
-                        uri: `git+https://github.com/${process.env.GITHUB_REPOSITORY}@${process.env.GITHUB_SHA}`,
-                        digest: {
-                            sha256: bundleHash.replace('sha256:', ''),
+                    internalParameters: {
+                        github: {
+                            event_name: process.env.GITHUB_EVENT_NAME,
+                            repository_id: process.env.GITHUB_REPOSITORY_ID,
+                            repository_owner_id: process.env.GITHUB_REPOSITORY_OWNER_ID,
                         },
                     },
-                ],
+                    resolvedDependencies: [
+                        {
+                            uri: `git+https://github.com/${process.env.GITHUB_REPOSITORY}@${process.env.GITHUB_REF}`,
+                            digest: {
+                                gitCommit: process.env.GITHUB_SHA ?? '',
+                            },
+                        },
+                    ],
+                },
+                runDetails: {
+                    builder: {
+                        id: 'https://github.com/KlyntLabs/action@v0.0.9',
+                    },
+                    metadata: {
+                        invocationId: `https://github.com/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`,
+                        startedOn: new Date().toISOString(),
+                    },
+                },
             },
             token,
         });
