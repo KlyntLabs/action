@@ -1,0 +1,49 @@
+name: 'Deploy Klynt Miniapp'
+description: 'Build and deploy miniapps to Klynt with SLSA Level 3 provenance'
+author: 'Klynt'
+branding:
+  icon: 'package'
+  color: 'blue'
+
+inputs:
+  api-key:
+    description: 'Klynt API key (use secrets.KLYNT_API_KEY)'
+    required: true
+  tenant-id:
+    description: 'Target tenant ID for deployment'
+    required: true
+  manifest:
+    description: 'Path to package.json or manifest.json (defaults to package.json)'
+    required: false
+    default: './package.json'
+  entry:
+    description: 'Entry point for build (if not using pre-built bundle)'
+    required: false
+    default: './src/index.tsx'
+  bundle:
+    description: 'Path to pre-built bundle (skips build step if provided)'
+    required: false
+  skip-attestation:
+    description: 'Skip SLSA attestation generation (not recommended)'
+    required: false
+    default: 'false'
+  api-url:
+    description: 'Klynt API base URL'
+    required: false
+    default: 'https://api.klynt.com'
+
+outputs:
+  deployment-id:
+    description: 'UUID of the created deployment'
+  status:
+    description: 'Deployment status (deployed, pending_review, rejected)'
+  bundle-url:
+    description: 'CDN URL of the deployed bundle'
+  bundle-hash:
+    description: 'SHA-256 hash of the bundle'
+  attestation-id:
+    description: 'GitHub attestation ID (for SLSA verification)'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
