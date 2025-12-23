@@ -45,27 +45,5 @@ outputs:
     description: 'GitHub attestation ID (for SLSA verification)'
 
 runs:
-  using: 'composite'
-  steps:
-    - name: Setup Node.js for action
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-
-    - name: Install action dependencies
-      shell: bash
-      run: |
-        cd ${{ github.action_path }}
-        npm ci --prefer-offline --production
-
-    - name: Run deployment
-      shell: bash
-      run: node ${{ github.action_path }}/dist/index.js
-      env:
-        INPUT_API_KEY: ${{ inputs.api-key }}
-        INPUT_TENANT_ID: ${{ inputs.tenant-id }}
-        INPUT_MANIFEST: ${{ inputs.manifest }}
-        INPUT_ENTRY: ${{ inputs.entry }}
-        INPUT_BUNDLE: ${{ inputs.bundle }}
-        INPUT_SKIP_ATTESTATION: ${{ inputs.skip-attestation }}
-        INPUT_API_URL: ${{ inputs.api-url }}
+  using: 'node20'
+  main: 'dist/index.js'
