@@ -67823,7 +67823,12 @@ async function run() {
         const entryPoint = core.getInput('entry');
         const prebuiltBundle = core.getInput('bundle');
         const skipAttestation = core.getBooleanInput('skip-attestation');
+        const githubToken = core.getInput('github-token');
         const apiUrl = core.getInput('api-url');
+        // Set GITHUB_TOKEN for attestation if provided
+        if (githubToken) {
+            process.env.GITHUB_TOKEN = githubToken;
+        }
         core.info('🚀 Starting Klynt Miniapp deployment');
         // 2. Parse manifest
         core.startGroup('📋 Parsing manifest');
