@@ -1,0 +1,37 @@
+{
+  "name": "@klynt/miniapp-action",
+  "version": "1.0.0",
+  "description": "Official GitHub Action for deploying Klynt miniapps",
+  "main": "dist/index.js",
+  "private": true,
+  "scripts": {
+    "build": "ncc build src/index.ts -o dist --source-map --license licenses.txt --external esbuild",
+    "test": "vitest",
+    "lint": "eslint src/",
+    "check-types": "tsc --noEmit",
+    "clean": "rm -rf dist .klynt-build"
+  },
+  "keywords": [
+    "github-action",
+    "klynt",
+    "miniapp",
+    "deployment",
+    "slsa"
+  ],
+  "author": "Klynt",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/attest": "^1.0.0",
+    "@actions/core": "^1.10.0",
+    "@actions/github": "^6.0.0",
+    "@actions/http-client": "^2.2.0",
+    "esbuild": "^0.27.2",
+    "form-data": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@vercel/ncc": "^0.38.0",
+    "typescript": "5.9.2",
+    "vitest": "^3.2.4"
+  }
+}
