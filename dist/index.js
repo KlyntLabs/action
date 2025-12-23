@@ -67374,7 +67374,7 @@ async function deployToKlynt(options) {
             filename: 'attestation.json',
         });
     }
-    const url = `${options.apiUrl}/api/tenants/${options.tenantId}/miniapps/deploy`;
+    const url = `${options.apiUrl}/api/miniapps/deploy`;
     core.debug(`Deploying to: ${url}`);
     const response = await client.post(url, form.getBuffer().toString(), {
         Authorization: `Bearer ${options.apiKey}`,
@@ -67533,7 +67533,6 @@ async function run() {
         (0, utils_1.validateGitHubEnv)();
         // 1. Get inputs
         const apiKey = core.getInput('api-key', { required: true });
-        const tenantId = core.getInput('tenant-id', { required: true });
         const manifestPath = core.getInput('manifest');
         const entryPoint = core.getInput('entry');
         const prebuiltBundle = core.getInput('bundle');
@@ -67588,7 +67587,6 @@ async function run() {
         core.startGroup('📤 Deploying to Klynt');
         const deployResult = await (0, deploy_1.deployToKlynt)({
             apiKey,
-            tenantId,
             apiUrl,
             manifest,
             bundle: bundleContent,
